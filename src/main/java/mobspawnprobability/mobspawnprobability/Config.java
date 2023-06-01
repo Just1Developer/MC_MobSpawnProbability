@@ -50,6 +50,7 @@ public class Config {
 			Excluded.add(EntityType.ENDER_CRYSTAL);
 			Excluded.add(EntityType.ENDER_PEARL);
 			Excluded.add(EntityType.ENDER_SIGNAL);
+			Excluded.add(EntityType.ENDER_DRAGON);
 			Excluded.add(EntityType.EXPERIENCE_ORB);
 			Excluded.add(EntityType.FIREBALL);
 			Excluded.add(EntityType.FIREWORK);
