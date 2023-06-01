@@ -1,0 +1,8 @@
+name: MobSpawnProbability
+version: '${project.version}'
+main: mobspawnprobability.mobspawnprobability.MobSpawnProbability
+api-version: 1.19
+prefix: JustOneDev's MobSpawnProbability
+load: STARTUP
+authors: [ JustOneDeveloper ]
+description: A plugin that lets you edit mob spawn probabilities
