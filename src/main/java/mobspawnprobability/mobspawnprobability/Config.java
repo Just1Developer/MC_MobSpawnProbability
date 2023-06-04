@@ -112,8 +112,9 @@ public class Config {
 		{
 			if(Excluded.contains(type)) continue;
 			double value = cfg.getDouble("Type." + type.toString());
-			if(value > 1.0) value = 1.0;
-			if(value < 0.0) value = 0.0;
+			// Remove caps
+			//if(value > 1.0) value = 1.0;
+			//if(value < 0.0) value = 0.0;
 			probabilities.put(type, value);
 		}
 		Overworld = cfg.getDouble("Dimension.OVERWORLD");
