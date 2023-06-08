@@ -27,8 +27,12 @@ public final class MobSpawnProbability extends JavaPlugin implements Listener {
         if(worldName.endsWith("_nether")) worldSpawnRate = Config.Nether;
         else if(worldName.endsWith("_the_end")) worldSpawnRate = Config.End;
         else worldSpawnRate = Config.Overworld;
+
+        double attitude = 1.0;
+        if(Config.FriendlyMobs.contains(e.getEntityType())) attitude = Config.Friendly;
+        else if(Config.HostileMobs.contains(e.getEntityType())) attitude = Config.Hostile;
         
-        double Probability = worldSpawnRate * Config.probabilities.get(e.getEntityType());
+        double Probability = worldSpawnRate * Config.probabilities.get(e.getEntityType()) * attitude;
         // Deny cancel if the probability says so
         if(Math.random() > Probability) e.setCancelled(true);
     }

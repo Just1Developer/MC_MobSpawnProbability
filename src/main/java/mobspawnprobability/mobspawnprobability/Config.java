@@ -14,9 +14,14 @@ public class Config {
 	
 	public static HashMap<EntityType, Double> probabilities;
 	public static double Overworld = 1.0, Nether = 1.0, End = 1.0;
+	public static double Friendly = 1.0, Hostile = 1.0;
 	
-	public static final List<EntityType> Excluded = new ArrayList<EntityType>();
-	
+	public static final List<EntityType> Excluded = new ArrayList<>();
+
+	public static final List<EntityType> FriendlyMobs = new ArrayList<>();
+	public static final List<EntityType> NeutralMobs = new ArrayList<>();	// Maybe, mobs that dont attack unless provoked. But this would include endermen
+	public static final List<EntityType> HostileMobs = new ArrayList<>();
+
 	public static void loadProbabilites()
 	{
 		probabilities = new HashMap<>();
@@ -69,6 +74,51 @@ public class Config {
 			Excluded.add(EntityType.TRIDENT);
 			Excluded.add(EntityType.UNKNOWN);
 			Excluded.add(EntityType.WITHER_SKULL);
+			Excluded.add(EntityType.WITHER);	// This handsome fella is summoned, so we're gonna exclude it
+
+			HostileMobs.add(EntityType.BLAZE);
+			HostileMobs.add(EntityType.CAVE_SPIDER);
+			HostileMobs.add(EntityType.CREEPER);
+			HostileMobs.add(EntityType.DROWNED);
+			HostileMobs.add(EntityType.ENDERMITE);
+			HostileMobs.add(EntityType.EVOKER);
+			HostileMobs.add(EntityType.ELDER_GUARDIAN);
+			HostileMobs.add(EntityType.GHAST);
+			HostileMobs.add(EntityType.GIANT);
+			HostileMobs.add(EntityType.GUARDIAN);
+			HostileMobs.add(EntityType.HOGLIN);
+			HostileMobs.add(EntityType.HUSK);	// Is this the big pig in the nether?
+			HostileMobs.add(EntityType.ILLUSIONER);
+			//HostileMobs.add(EntityType.LLAMA_SPIT);			// Maybe? lol
+			HostileMobs.add(EntityType.MAGMA_CUBE);
+			HostileMobs.add(EntityType.PHANTOM);
+			HostileMobs.add(EntityType.PIGLIN);
+			HostileMobs.add(EntityType.PIGLIN_BRUTE);
+			// Perhaps insert polar bears? Dont think they're hostile tho
+			HostileMobs.add(EntityType.RAVAGER);
+			HostileMobs.add(EntityType.SHULKER);
+			HostileMobs.add(EntityType.SILVERFISH);
+			HostileMobs.add(EntityType.SKELETON);
+			HostileMobs.add(EntityType.SLIME);
+			HostileMobs.add(EntityType.SPIDER);
+			HostileMobs.add(EntityType.STRAY);		// What
+			HostileMobs.add(EntityType.STRIDER);	// Are
+			HostileMobs.add(EntityType.VEX);		// Those??
+			HostileMobs.add(EntityType.WARDEN);
+			HostileMobs.add(EntityType.WITCH);
+			HostileMobs.add(EntityType.WITHER_SKELETON);	// No wither cause that usually doesnt spawn
+			HostileMobs.add(EntityType.ZOGLIN);
+			HostileMobs.add(EntityType.ZOMBIE);
+			HostileMobs.add(EntityType.ZOMBIFIED_PIGLIN);	// Is this guy hostile?
+
+			// Technically Neutral (pigman too but were not using the list rn)
+			HostileMobs.add(EntityType.ENDERMAN);
+
+			for(EntityType type : EntityType.values())
+			{
+				if(!Excluded.contains(type) && !HostileMobs.contains(type))
+					FriendlyMobs.add(type);
+			}
 		}
 		
 		// Maybe add other lists later, like hostile / friendly / neutral or based on dimension
@@ -80,31 +130,24 @@ public class Config {
 			//cfg.set("Btw,_values_go_from_0.00_to_1.00._All_else_set_to_the_nearest_border_value.", 0);
 			//cfg.set("Tip:_I_left_the_wandering_trader_in,_but_please_do_reconsider_if_you_want_to_change_that_probability.", 0);
 			//cfg.set("#", 0);
-			
+
+			cfg.options().copyDefaults(true);
+
 			//cfg.addDefault("Dimensions:", "");
 			cfg.addDefault("Dimension.OVERWORLD", 1.0);
 			cfg.addDefault("Dimension.NETHER", 1.0);
 			cfg.addDefault("Dimension.END", 1.0);
-			cfg.set("Dimension.OVERWORLD", 1.0);
-			cfg.set("Dimension.NETHER", 1.0);
-			cfg.set("Dimension.END", 1.0);
-			
+			cfg.addDefault("Attitude.Friendly", 1.0);
+			cfg.addDefault("Attitude.Hostile", 1.0);
+
 			//cfg.addDefault("Btw, values go from 0.00 to 1.00. All else set to the nearest border value.", 0);
 			//cfg.addDefault("Tip: I left the wandering trader in, but please do reconsider if you want to change that probability.", 0);
 			for(EntityType type : EntityType.values())
 			{
 				if(Excluded.contains(type)) continue;
 				cfg.addDefault("Type." + type.toString(), 1.0);
-				cfg.set("Type." + type, 1.0);
+				//cfg.set("Type." + type, 1.0);
 				//probabilities.put(type, 1.00);	// I removed the return statement so this is covered by the code block below
-			}
-			try {
-				// Idk why this doesnt work the way its supposed to. I'd have to look it up but im too lazy rn so imma maybe do it later
-				Objects.requireNonNull(cfg.getDefaults()).options().copyDefaults(true);
-			} catch(Exception ignored)
-			{
-				// Yeah it just does that...
-				System.out.println("Error: Failed to save default config");
 			}
 			saveCfg();
 		}
@@ -120,6 +163,9 @@ public class Config {
 		Overworld = cfg.getDouble("Dimension.OVERWORLD");
 		Nether = cfg.getDouble("Dimension.NETHER");
 		End = cfg.getDouble("Dimension.END");
+
+		Friendly = cfg.getDouble("Attitude.Friendly");
+		Hostile = cfg.getDouble("Attitude.Hostile");
 	}
 	
 	private static void saveCfg()
